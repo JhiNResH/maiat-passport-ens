@@ -145,12 +145,15 @@ export default function MaiatApp() {
         }),
       });
       const data = await res.json();
-      if (res.ok && data.passport) {
+      if (data.passport) {
         setResult(data.passport);
         setSearchState('taken');
+      } else {
+        setSearchState('error');
       }
     } catch (err) {
       console.error('Registration failed:', err);
+      setSearchState('error');
     } finally {
       setRegistering(false);
     }
