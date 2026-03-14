@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Search, Globe, Shield, Zap, Cpu, Activity, Copy, Check, Loader2, Sun, Moon, Menu, X, ExternalLink } from 'lucide-react';
+import { ArrowRight, Search, Globe, Shield, Zap, Cpu, Activity, Copy, Check, Loader2, Sun, Moon, Menu, X, ExternalLink, Wallet } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 const API = process.env.NEXT_PUBLIC_API_BASE || '';
 
@@ -58,6 +59,11 @@ const verdictColor = (v: string) => {
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function MaiatApp() {
+  const { login, authenticated, logout } = usePrivy();
+  const { wallets } = useWallets();
+  const connectedWallet = wallets.find(w => w.walletClientType !== 'privy') ?? wallets[0];
+  const walletAddress = connectedWallet?.address ?? null;
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [searchState, setSearchState] = useState<SearchState>('idle');
@@ -67,6 +73,7 @@ export default function MaiatApp() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [registering, setRegistering] = useState(false);
+  const [pendingRegister, setPendingRegister] = useState(false);
 
   // Theme toggle
   useEffect(() => {
@@ -125,9 +132,27 @@ export default function MaiatApp() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // ── Register ──────────────────────────────────────────────────────────────
+  // ── Register (requires wallet) ─────────────────────────────────────────
+
+  // If user just connected wallet and had a pending register, fire it
+  useEffect(() => {
+    if (pendingRegister && authenticated && walletAddress) {
+      setPendingRegister(false);
+      doRegister(walletAddress);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingRegister, authenticated, walletAddress]);
 
   const handleRegister = async () => {
+    if (!authenticated || !walletAddress) {
+      setPendingRegister(true);
+      login();
+      return;
+    }
+    await doRegister(walletAddress);
+  };
+
+  const doRegister = async (wallet: string) => {
     const ensName = searchQuery.trim().toLowerCase().replace(/\.maiat\.eth$/, '');
     if (ensName.length < 3) return;
 
@@ -141,6 +166,7 @@ export default function MaiatApp() {
         },
         body: JSON.stringify({
           ensName,
+          walletAddress: wallet,
           type: 'human',
         }),
       });
@@ -216,14 +242,30 @@ export default function MaiatApp() {
             {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
 
-          <motion.a
-            href="https://app.maiat.io"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`hidden sm:block px-7 py-3 rounded-full text-[11px] font-black tracking-[0.2em] transition-all uppercase no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
-          >
-            Launch App
-          </motion.a>
+          {authenticated && walletAddress ? (
+            <div className="hidden sm:flex items-center gap-3">
+              <span className={`text-[10px] font-mono font-bold px-3 py-2 rounded-full border ${isDarkMode ? 'border-white/10 text-white/60' : 'border-black/10 text-black/60'}`}>
+                {walletAddress.slice(0, 6)}…{walletAddress.slice(-4)}
+              </span>
+              <motion.a
+                href="https://app.maiat.io"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-7 py-3 rounded-full text-[11px] font-black tracking-[0.2em] transition-all uppercase no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
+              >
+                Launch App
+              </motion.a>
+            </div>
+          ) : (
+            <motion.button
+              onClick={() => login()}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`hidden sm:flex items-center gap-2 px-7 py-3 rounded-full text-[11px] font-black tracking-[0.2em] transition-all uppercase ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
+            >
+              <Wallet className="w-3.5 h-3.5" /> Connect
+            </motion.button>
+          )}
         </div>
       </nav>
 
@@ -240,7 +282,11 @@ export default function MaiatApp() {
               <a href="https://app.maiat.io/monitor" onClick={() => setIsMobileMenuOpen(false)}>Monitor</a>
               <a href="https://app.maiat.io/docs" onClick={() => setIsMobileMenuOpen(false)}>Docs</a>
               <a href="https://app.maiat.io/docs#api" onClick={() => setIsMobileMenuOpen(false)}>API</a>
-              <a href="https://app.maiat.io" className={`w-full py-4 rounded-2xl block ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Launch App</a>
+              {authenticated ? (
+                <a href="https://app.maiat.io" className={`w-full py-4 rounded-2xl block no-underline ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Launch App</a>
+              ) : (
+                <button onClick={() => { login(); setIsMobileMenuOpen(false); }} className={`w-full py-4 rounded-2xl ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Connect Wallet</button>
+              )}
             </div>
           </motion.div>
         )}
@@ -341,7 +387,13 @@ export default function MaiatApp() {
                     disabled={registering}
                     className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all disabled:opacity-50 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}
                   >
-                    {registering ? <><Loader2 className="w-4 h-4 animate-spin" /> Registering...</> : <>Register <ArrowRight className="w-4 h-4" /></>}
+                    {registering ? (
+                      <><Loader2 className="w-4 h-4 animate-spin" /> Registering...</>
+                    ) : !authenticated ? (
+                      <><Wallet className="w-4 h-4" /> Connect & Register</>
+                    ) : (
+                      <>Register <ArrowRight className="w-4 h-4" /></>
+                    )}
                   </button>
                   <span className="text-[10px] text-gray-400 font-bold">Free · No gas · 10 🪲 bonus</span>
                 </div>
@@ -378,9 +430,9 @@ export default function MaiatApp() {
                 </div>
                 <a
                   href={`https://app.maiat.io/passport/${result.walletAddress || result.ensName}`}
-                  className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all border ${isDarkMode ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:bg-black/5'}`}
+                  className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
                 >
-                  View <ExternalLink className="w-3 h-3" />
+                  Launch App <ArrowRight className="w-4 h-4" />
                 </a>
               </motion.div>
             )}

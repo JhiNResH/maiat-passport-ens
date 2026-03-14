@@ -1,0 +1,33 @@
+'use client';
+
+import { type ReactNode } from 'react';
+import { PrivyProvider as Privy } from '@privy-io/react-auth';
+
+export function PrivyProvider({ children }: { children: ReactNode }) {
+  const appId = (process.env.NEXT_PUBLIC_PRIVY_APP_ID ?? '').trim();
+
+  if (!appId) {
+    console.warn('Privy App ID is missing. Auth features will be disabled.');
+    return <>{children}</>;
+  }
+
+  return (
+    <Privy
+      appId={appId}
+      config={{
+        appearance: {
+          theme: 'dark',
+          accentColor: '#3B82F6',
+        },
+        loginMethods: ['wallet'],
+        embeddedWallets: {
+          ethereum: {
+            createOnLogin: 'off',
+          },
+        },
+      }}
+    >
+      {children}
+    </Privy>
+  );
+}
