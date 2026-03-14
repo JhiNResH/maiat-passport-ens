@@ -540,6 +540,70 @@ export default function MaiatApp() {
         </div>
       </div>
 
+      {/* For Agent Builders */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-6xl mb-32"
+      >
+        <h2 className={`text-4xl md:text-6xl font-black tracking-[-0.04em] mb-16 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
+          Give your agent an identity
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Step 1 */}
+          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
+            <h3 className="text-xl font-black mb-3">Install Guard</h3>
+            <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-sm mb-4">
+              <span className="text-emerald-400">npm</span> <span className="text-gray-400">install @maiat/viem-guard</span>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Wallet-level protection. Anti-poisoning, trust checks, threat reporting.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
+            <h3 className="text-xl font-black mb-3">One-line setup</h3>
+            <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-[11px] leading-relaxed mb-4">
+              <span className="text-blue-400">import</span> <span className="text-gray-400">{'{'}</span> <span className="text-orange-300">createMaiatAgentWallet</span> <span className="text-gray-400">{'}'}</span><br />
+              <span className="text-blue-400">from</span> <span className="text-emerald-400">&apos;@maiat/viem-guard&apos;</span><br /><br />
+              <span className="text-gray-500">const</span> <span className="text-gray-300">wallet</span> <span className="text-gray-500">=</span> <span className="text-orange-300">createMaiatAgentWallet</span><span className="text-gray-400">(client)</span>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Every transaction is now trust-checked automatically.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 relative overflow-hidden ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
+            <h3 className="text-xl font-black mb-3">You&apos;re live</h3>
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center gap-3">
+                <Globe className="w-4 h-4 text-blue-500 shrink-0" />
+                <span className="text-sm text-gray-400">ENS identity auto-registered</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm text-gray-400">Trust score tracking from day 1</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Zap className="w-4 h-4 text-orange-400 shrink-0" />
+                <span className="text-sm text-gray-400">Earn 🪲 on every outcome report</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Your agent gets a passport automatically. No extra steps.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Footer */}
       <footer className={`mt-auto py-16 w-full max-w-6xl border-t flex flex-col md:flex-row items-center justify-between gap-8 transition-colors duration-500 ${isDarkMode ? 'border-white/10' : 'border-black/5'}`}>
         <div className="flex items-center gap-8 text-[11px] font-black text-gray-400 uppercase tracking-[0.3em]">
