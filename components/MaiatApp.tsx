@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Search, Globe, Shield, Zap, Cpu, Activity, Copy, Check, Loader2, Sun, Moon, Menu, X, ExternalLink, Wallet } from 'lucide-react';
+import { ArrowRight, Search, Globe, Shield, Zap, Cpu, Activity, Copy, Check, Loader2, Sun, Moon, Menu, X, ExternalLink, Wallet, Twitter } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 
@@ -74,6 +74,7 @@ export default function MaiatApp() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [registering, setRegistering] = useState(false);
   const [pendingRegister, setPendingRegister] = useState(false);
+  const [shared, setShared] = useState(false);
 
   // Theme toggle
   useEffect(() => {
@@ -428,12 +429,35 @@ export default function MaiatApp() {
                     </div>
                   </div>
                 </div>
-                <a
-                  href={`https://app.maiat.io/passport/${result.walletAddress || result.ensName}`}
-                  className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
-                >
-                  Launch App <ArrowRight className="w-4 h-4" />
-                </a>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Just claimed my Maiat Trust Passport 🛡️\n\n${result.ensFullName} — Trust Score: ${result.trustScore} (${result.verdict})\n\nVerify any wallet or agent before you transact →`)}&url=${encodeURIComponent('https://passport.maiat.io')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setShared(true)}
+                      className={`px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all no-underline border ${
+                        shared
+                          ? (isDarkMode ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-emerald-500/30 text-emerald-600 bg-emerald-50')
+                          : (isDarkMode ? 'border-blue-500/30 text-blue-400 bg-blue-500/10 hover:bg-blue-500/20' : 'border-blue-500/30 text-blue-600 bg-blue-50 hover:bg-blue-100')
+                      }`}
+                    >
+                      {shared ? <><Check className="w-3.5 h-3.5" /> Shared</> : <><Twitter className="w-3.5 h-3.5" /> Share</>}
+                    </a>
+                    <a
+                      href={`https://app.maiat.io/passport/${result.walletAddress || result.ensName}`}
+                      className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
+                    >
+                      Launch App <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                  {!shared && (
+                    <span className="text-[10px] text-blue-500 font-bold animate-pulse">Share & earn 5 extra 🪲</span>
+                  )}
+                  {shared && (
+                    <span className="text-[10px] text-emerald-500 font-bold">+5 🪲 bonus claimed!</span>
+                  )}
+                </div>
               </motion.div>
             )}
 
