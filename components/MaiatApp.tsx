@@ -93,7 +93,7 @@ function PassportDockItem({ item, mouseX, isDarkMode }: { item: { label: string;
   return (
     <a ref={ref} href={item.href} className="relative">
       <motion.div style={{ scale: springScale }} className="px-5 py-2 rounded-full">
-        <span className={`text-[13px] font-bold uppercase tracking-widest transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
+        <span className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
           {item.label}
         </span>
       </motion.div>
@@ -301,7 +301,7 @@ export default function MaiatApp() {
           <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
             <Globe className={`w-3.5 h-3.5 ${isDarkMode ? 'text-black' : 'text-white'}`} />
           </div>
-          <span className="font-mono font-bold text-base tracking-widest uppercase">Maiat</span>
+          <span className={`font-mono font-bold text-base tracking-widest uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>MAIAT</span>
         </a>
 
         <PassportDockNav isDarkMode={isDarkMode} />
