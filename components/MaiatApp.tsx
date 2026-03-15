@@ -120,8 +120,14 @@ export default function MaiatApp() {
           setSearchState('available');
         } else if (res.ok) {
           const data = await res.json();
-          setResult(data.passport);
-          setSearchState('taken');
+          if (data.available) {
+            setSearchState('available');
+          } else if (data.passport) {
+            setResult(data.passport);
+            setSearchState('taken');
+          } else {
+            setSearchState('available');
+          }
         } else {
           setSearchState('error');
         }
