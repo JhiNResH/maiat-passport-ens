@@ -301,7 +301,7 @@ export default function MaiatApp() {
           <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
             <Globe className={`w-3.5 h-3.5 ${isDarkMode ? 'text-black' : 'text-white'}`} />
           </div>
-          <span className={`font-mono font-bold text-base tracking-widest uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>MAIAT</span>
+          <span className={`font-mono font-bold text-base tracking-widest uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>maiat</span>
         </a>
 
         <PassportDockNav isDarkMode={isDarkMode} />
