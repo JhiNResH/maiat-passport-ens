@@ -142,11 +142,25 @@ export default function MaiatApp() {
   // ── Register (requires wallet) ─────────────────────────────────────────
 
   // If user just connected wallet and had a pending register, fire it
+  // Retry with a short delay to ensure walletAddress is populated
   useEffect(() => {
-    if (pendingRegister && authenticated && walletAddress) {
+    if (!pendingRegister || !authenticated) return;
+    
+    if (walletAddress) {
       setPendingRegister(false);
       doRegister(walletAddress);
+      return;
     }
+
+    // walletAddress might not be available yet — retry after a tick
+    const retry = setTimeout(() => {
+      if (walletAddress) {
+        setPendingRegister(false);
+        doRegister(walletAddress);
+      }
+    }, 1500);
+
+    return () => clearTimeout(retry);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingRegister, authenticated, walletAddress]);
 
@@ -182,6 +196,7 @@ export default function MaiatApp() {
         setResult(data.passport);
         setSearchState('taken');
       } else {
+        console.error('Registration response missing passport:', data);
         setSearchState('error');
       }
     } catch (err) {
