@@ -278,59 +278,59 @@ export default function MaiatApp() {
       />
 
       {/* Navbar */}
-      <nav className={`w-full max-w-4xl backdrop-blur-2xl border rounded-[2.5rem] px-6 md:px-8 py-4 flex items-center justify-between shadow-lg mb-28 sticky top-8 z-50 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10 shadow-black/20' : 'bg-white/40 border-white/20 shadow-black/5'}`}>
-        <a href="https://maiat.io" className="flex items-center gap-3 group cursor-pointer">
-          <div className={`w-8 h-8 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500 ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
-            <Globe className={`w-4 h-4 ${isDarkMode ? 'text-black' : 'text-white'}`} />
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl rounded-full px-6 py-3 flex items-center justify-between border transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/8 shadow-[inset_0_0_30px_rgba(255,255,255,0.02),0_30px_100px_rgba(0,0,0,0.3)]' : 'bg-white/70 border-black/8 shadow-[0_20px_50px_rgba(0,0,0,0.05)]'}`}
+        style={{ backdropFilter: 'blur(60px) saturate(180%)', WebkitBackdropFilter: 'blur(60px) saturate(180%)' }}
+      >
+        <a href="https://maiat.io" className="flex items-center gap-2.5 group cursor-pointer shrink-0">
+          <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
+            <Globe className={`w-3.5 h-3.5 ${isDarkMode ? 'text-black' : 'text-white'}`} />
           </div>
-          <span className="font-black text-xl tracking-tighter">Maiat</span>
+          <span className="font-mono font-bold text-base tracking-widest uppercase">Maiat</span>
         </a>
 
         <PassportDockNav isDarkMode={isDarkMode} />
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-            className={`p-2.5 rounded-full border transition-all active:scale-90 ${isDarkMode ? 'bg-white/10 border-white/10 text-yellow-400 hover:bg-white/20' : 'bg-black/5 border-black/5 text-gray-500 hover:bg-black/10'}`}
+            className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all active:scale-90 ${isDarkMode ? 'bg-white/10 border-white/10 text-yellow-400' : 'bg-black/5 border-black/5 text-gray-500'}`}
           >
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            className={`md:hidden p-2.5 rounded-full border transition-all ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-black/5 border-black/5'}`}
+            className={`md:hidden w-9 h-9 rounded-full flex items-center justify-center border transition-all ${isDarkMode ? 'bg-white/10 border-white/10' : 'bg-black/5 border-black/5'}`}
           >
             {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
 
           {authenticated && walletAddress ? (
-            <div className="hidden sm:flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2">
               <span className={`text-[10px] font-mono font-bold px-3 py-2 rounded-full border ${isDarkMode ? 'border-white/10 text-white/60' : 'border-black/10 text-black/60'}`}>
                 {walletAddress.slice(0, 6)}…{walletAddress.slice(-4)}
               </span>
-              <motion.a
-                href="https://app.maiat.io"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-7 py-3 rounded-full text-[11px] font-black tracking-[0.2em] transition-all uppercase no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
-              >
+              <a href="https://app.maiat.io" className={`px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] no-underline transition-all shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>
                 Launch App
-              </motion.a>
+              </a>
             </div>
           ) : (
-            <motion.button
+            <button
               onClick={() => login()}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`hidden sm:flex items-center gap-2 px-7 py-3 rounded-full text-[11px] font-black tracking-[0.2em] transition-all uppercase ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
+              className={`hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all shadow-lg ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}
             >
               <Wallet className="w-3.5 h-3.5" /> Connect
-            </motion.button>
+            </button>
           )}
         </div>
-      </nav>
+      </motion.nav>
+
+      {/* Spacer for fixed nav */}
+      <div className="h-24 mb-12" />
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -339,16 +339,19 @@ export default function MaiatApp() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`fixed inset-x-4 top-28 z-40 p-8 rounded-3xl border backdrop-blur-3xl md:hidden shadow-2xl ${isDarkMode ? 'bg-black/90 border-white/10' : 'bg-white/90 border-black/5'}`}
+            className={`fixed inset-x-4 top-24 z-40 p-6 rounded-2xl border md:hidden ${isDarkMode ? 'bg-black/90 border-white/10' : 'bg-white/90 border-black/5'}`}
+            style={{ backdropFilter: 'blur(40px)' }}
           >
-            <div className="flex flex-col gap-6 text-center font-black uppercase tracking-widest text-sm">
-              <a href="https://app.maiat.io/monitor" onClick={() => setIsMobileMenuOpen(false)}>Monitor</a>
-              <a href="https://app.maiat.io/docs" onClick={() => setIsMobileMenuOpen(false)}>Docs</a>
-              <a href="https://app.maiat.io/docs#api" onClick={() => setIsMobileMenuOpen(false)}>API</a>
+            <div className="flex flex-col gap-4">
+              {passportNavLinks.map((item) => (
+                <a key={item.label} href={item.href} onClick={() => setIsMobileMenuOpen(false)} className="py-3 px-4 text-sm font-bold rounded-xl hover:bg-white/5 transition-all">
+                  {item.label}
+                </a>
+              ))}
               {authenticated ? (
-                <a href="https://app.maiat.io" className={`w-full py-4 rounded-2xl block no-underline ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Launch App</a>
+                <a href="https://app.maiat.io" className={`w-full py-3 rounded-full text-center text-[10px] font-bold uppercase tracking-widest no-underline ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Launch App</a>
               ) : (
-                <button onClick={() => { login(); setIsMobileMenuOpen(false); }} className={`w-full py-4 rounded-2xl ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Connect Wallet</button>
+                <button onClick={() => { login(); setIsMobileMenuOpen(false); }} className={`w-full py-3 rounded-full text-[10px] font-bold uppercase tracking-widest ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>Connect Wallet</button>
               )}
             </div>
           </motion.div>
