@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowRight, Search, Globe, Shield, Zap, Cpu, Activity, Copy, Check, Loader2, Sun, Moon, Menu, X, ExternalLink, Wallet, Twitter } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 const API = process.env.NEXT_PUBLIC_API_BASE || '';
@@ -57,6 +57,51 @@ const verdictColor = (v: string) => {
 };
 
 // ── Main Component ────────────────────────────────────────────────────────────
+
+// ─── macOS Dock magnification for passport nav ──────────────────────────────
+
+const passportNavLinks = [
+  { label: 'Monitor', href: 'https://app.maiat.io/monitor' },
+  { label: 'Docs', href: 'https://app.maiat.io/docs' },
+  { label: 'API', href: 'https://app.maiat.io/docs#api' },
+];
+
+function PassportDockNav({ isDarkMode }: { isDarkMode: boolean }) {
+  const mouseX = useMotionValue(-Infinity);
+  return (
+    <motion.div
+      className="hidden md:flex items-center gap-0.5"
+      onMouseMove={(e) => mouseX.set(e.clientX)}
+      onMouseLeave={() => mouseX.set(-Infinity)}
+    >
+      {passportNavLinks.map((item) => (
+        <PassportDockItem key={item.label} item={item} mouseX={mouseX} isDarkMode={isDarkMode} />
+      ))}
+    </motion.div>
+  );
+}
+
+function PassportDockItem({ item, mouseX, isDarkMode }: { item: { label: string; href: string }; mouseX: ReturnType<typeof useMotionValue<number>>; isDarkMode: boolean }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const distance = useTransform(mouseX, (val: number) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+  const scale = useTransform(distance, [-120, 0, 120], [1, 1.35, 1]);
+  const springScale = useSpring(scale, { mass: 0.1, stiffness: 200, damping: 12 });
+
+  return (
+    <a ref={ref} href={item.href} className="relative">
+      <motion.div style={{ scale: springScale }} className="px-5 py-2 rounded-full">
+        <span className={`text-[13px] font-bold uppercase tracking-widest transition-colors ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
+          {item.label}
+        </span>
+      </motion.div>
+    </a>
+  );
+}
+
+// ─── Main App ────────────────────────────────────────────────────────────────
 
 export default function MaiatApp() {
   const { login, authenticated, logout } = usePrivy();
@@ -241,11 +286,7 @@ export default function MaiatApp() {
           <span className="font-black text-xl tracking-tighter">Maiat</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-10 text-[13px] font-bold text-gray-400 uppercase tracking-widest">
-          <a href="https://app.maiat.io/monitor" className="hover:text-current transition-all hover:tracking-[0.2em]">Monitor</a>
-          <a href="https://app.maiat.io/docs" className="hover:text-current transition-all hover:tracking-[0.2em]">Docs</a>
-          <a href="https://app.maiat.io/docs#api" className="hover:text-current transition-all hover:tracking-[0.2em]">API</a>
-        </div>
+        <PassportDockNav isDarkMode={isDarkMode} />
 
         <div className="flex items-center gap-4">
           <button
