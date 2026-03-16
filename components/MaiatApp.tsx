@@ -770,24 +770,29 @@ export default function MaiatApp() {
               </div>
             </motion.div>
           ) : (
-            <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
-                <h3 className="text-xl font-black mb-3">Name Your Agent</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">Type your agent&apos;s name above. It&apos;ll get <span className="font-bold">name.maiat.eth</span> — a unique, verifiable identity.</p>
-              </div>
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
-                <h3 className="text-xl font-black mb-3">Assign a Wallet</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">Paste your agent&apos;s wallet address. Don&apos;t have one? We&apos;ll create one for you automatically.</p>
-              </div>
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
-                <h3 className="text-xl font-black mb-3">Agent is Live</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-blue-500 shrink-0" /><span className="text-sm text-gray-400">On-chain ENS identity</span></div>
-                  <div className="flex items-center gap-3"><Shield className="w-4 h-4 text-emerald-500 shrink-0" /><span className="text-sm text-gray-400">Trust score tracking</span></div>
-                  <div className="flex items-center gap-3"><Zap className="w-4 h-4 text-orange-400 shrink-0" /><span className="text-sm text-gray-400">10 🪲 bonus credits</span></div>
+            <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="flex justify-center">
+              <div className={`border rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>🤖</div>
+                <h3 className="text-2xl font-black mb-3">Add this to your agent</h3>
+                <p className="text-sm text-gray-400 mb-8">Point your agent to our skill file. It contains everything needed — registration, trust checks, wallet protection, and more.</p>
+                <div
+                  className="bg-[#0D0E12] rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all"
+                  onClick={() => { navigator.clipboard.writeText('https://app.maiat.io/skill.md'); setIsCopied(true); setTimeout(() => setIsCopied(false), 2000); }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">
+                      <span className="text-emerald-400">fetch</span>({`"`}<span className="text-blue-400">https://app.maiat.io/skill.md</span>{`"`})
+                    </span>
+                    <span className="text-white/40 group-hover:text-white transition-colors">
+                      {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-[11px] text-gray-500 mt-4">Your agent reads the skill file and follows the instructions automatically.</p>
+                <div className="flex items-center justify-center gap-6 mt-8 text-xs text-gray-400">
+                  <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-blue-500" /> ENS Identity</div>
+                  <div className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Trust Score</div>
+                  <div className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-orange-400" /> Wallet Guard</div>
                 </div>
               </div>
             </motion.div>
