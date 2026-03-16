@@ -683,27 +683,26 @@ export default function MaiatApp() {
               </div>
             </motion.div>
 
-            {/* Live Claims */}
-            <motion.div
+            {/* Analytics CTA */}
+            <motion.a
+              href="https://app.maiat.io/analytics"
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className={`border rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}
+              whileHover={{ scale: 1.02 }}
+              className={`border rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-500 cursor-pointer group ${isDarkMode ? 'bg-white/5 border-white/10 hover:border-white/30' : 'bg-white border-black/5 hover:border-black/20 shadow-sm'}`}
             >
               <div className="flex items-center justify-between">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center relative ${isDarkMode ? 'bg-emerald-500/20' : 'bg-emerald-50'}`}>
-                  <Activity className="w-6 h-6 text-emerald-500" />
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${isDarkMode ? 'bg-blue-500/20' : 'bg-blue-50'}`}>
+                  <Activity className="w-6 h-6 text-blue-500" />
                 </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total</p>
-                  <p className="text-3xl font-black tracking-tighter">
-                    {stats.queries}
-                  </p>
-                </div>
+                <span className={`text-xl font-black group-hover:translate-x-1 transition-transform ${isDarkMode ? 'text-white' : 'text-black'}`}>→</span>
               </div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">API Queries</p>
-            </motion.div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">View Analytics</p>
+            </motion.a>
           </div>
         </div>
       </div>
