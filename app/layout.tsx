@@ -9,8 +9,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Maiat Protocol',
-  description: "Your agent's verifiable identity. One name. Trust score. On-chain reputation.",
+  title: 'Maiat Passport — Free ENS Identity for Humans & Agents',
+  description: "Claim your free .maiat.eth identity. Verified on ENS, trust-scored, zero gas.",
+  openGraph: {
+    title: 'Maiat Passport — Free ENS Identity',
+    description: 'Claim your free .maiat.eth identity. Verified on ENS, trust-scored, zero gas.',
+    images: [{ url: '/api/og?name=maiat&score=100', width: 1200, height: 630 }],
+    siteName: 'Maiat Protocol',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Maiat Passport — Free ENS Identity',
+    description: 'Claim your free .maiat.eth identity. Verified on ENS, trust-scored, zero gas.',
+    images: ['/api/og?name=maiat&score=100'],
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
