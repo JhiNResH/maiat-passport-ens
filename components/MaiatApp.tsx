@@ -114,7 +114,7 @@ export default function MaiatApp() {
   const [searchState, setSearchState] = useState<SearchState>('idle');
   const [result, setResult] = useState<PassportResult | null>(null);
   const [isCopied, setIsCopied] = useState(false);
-  const [liveClaims, setLiveClaims] = useState(253);
+  const [liveClaims, setLiveClaims] = useState(21739);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
@@ -591,7 +591,7 @@ export default function MaiatApp() {
           <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ${isDarkMode ? 'from-blue-500/10 to-purple-500/10' : 'from-blue-500/5 to-orange-500/5'}`} />
           <div className="relative z-10">
             <h2 className="text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
-              <CountUp end={14600} />+
+              <CountUp end={21700} />+
             </h2>
             <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Agents Scored & Verified</p>
           </div>
@@ -650,7 +650,7 @@ export default function MaiatApp() {
                     <circle className={`${isDarkMode ? 'text-white/5' : 'text-gray-50'} stroke-current`} strokeWidth="4" fill="none" cx="18" cy="18" r="16" />
                     <motion.circle
                       initial={{ strokeDasharray: "0, 100" }}
-                      whileInView={{ strokeDasharray: "73, 100" }}
+                      whileInView={{ strokeDasharray: "67, 100" }}
                       viewport={{ once: true }}
                       transition={{ duration: 2, delay: 1 }}
                       className="text-blue-500 stroke-current"
@@ -660,7 +660,7 @@ export default function MaiatApp() {
                       cx="18" cy="18" r="16"
                     />
                   </svg>
-                  <div className="absolute inset-0 flex items-center justify-center text-sm font-black">73</div>
+                  <div className="absolute inset-0 flex items-center justify-center text-sm font-black">67</div>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Score</p>
@@ -668,7 +668,7 @@ export default function MaiatApp() {
                 </div>
               </div>
               <div className={`h-1 w-full rounded-full overflow-hidden ${isDarkMode ? 'bg-white/5' : 'bg-gray-50'}`}>
-                <div className="h-full w-[73%] bg-blue-500" />
+                <div className="h-full w-[67%] bg-blue-500" />
               </div>
             </motion.div>
 
@@ -697,7 +697,7 @@ export default function MaiatApp() {
                   </motion.p>
                 </div>
               </div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">New claims today</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Agents indexed</p>
             </motion.div>
           </div>
         </div>
