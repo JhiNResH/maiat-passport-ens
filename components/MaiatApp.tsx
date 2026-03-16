@@ -498,23 +498,32 @@ export default function MaiatApp() {
                   <div className="text-left">
                     <span className="font-black text-lg block leading-none mb-1">{result.ensFullName}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-black" style={{ color: verdictColor(result.verdict) }}>
-                        {result.trustScore}/100
-                      </span>
-                      <span
-                        className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase"
-                        style={{ color: verdictColor(result.verdict), backgroundColor: `${verdictColor(result.verdict)}15` }}
-                      >
-                        {result.verdict}
-                      </span>
-                      <span className="text-[10px] text-gray-400">{result.totalQueries} queries · 🪲 {result.scarabBalance}</span>
+                      {result.type === 'agent' && (
+                        <>
+                          <span className="text-xs font-black" style={{ color: verdictColor(result.verdict) }}>
+                            {result.trustScore}/100
+                          </span>
+                          <span
+                            className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase"
+                            style={{ color: verdictColor(result.verdict), backgroundColor: `${verdictColor(result.verdict)}15` }}
+                          >
+                            {result.verdict}
+                          </span>
+                        </>
+                      )}
+                      {result.type !== 'agent' && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-emerald-500 bg-emerald-500/10">
+                          Verified
+                        </span>
+                      )}
+                      <span className="text-[10px] text-gray-400">🪲 {result.scarabBalance}</span>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex items-center gap-2">
                     <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Just claimed my Maiat Trust Passport 🛡️\n\n${result.ensFullName} — Trust Score: ${result.trustScore} (${result.verdict})\n\nVerify any wallet or agent before you transact →`)}&url=${encodeURIComponent('https://passport.maiat.io')}`}
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Just claimed my Maiat Trust Passport 🛡️\n\n${result.ensFullName} — my verifiable identity is live.\n\nClaim yours →`)}&url=${encodeURIComponent('https://passport.maiat.io')}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setShared(true)}
@@ -527,7 +536,7 @@ export default function MaiatApp() {
                       {shared ? <><Check className="w-3.5 h-3.5" /> Shared</> : <><Twitter className="w-3.5 h-3.5" /> Share</>}
                     </a>
                     <a
-                      href={`https://app.maiat.io/passport/${result.walletAddress || result.ensName}`}
+                      href={`https://app.maiat.io/passport/${result.ensName}`}
                       className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 hover:gap-4 transition-all no-underline ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:shadow-xl'}`}
                     >
                       Launch App <ArrowRight className="w-4 h-4" />
