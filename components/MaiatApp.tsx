@@ -306,7 +306,7 @@ export default function MaiatApp() {
         style={{ backdropFilter: 'blur(60px) saturate(180%)', WebkitBackdropFilter: 'blur(60px) saturate(180%)' }}
       >
         <a href="https://maiat.io" className="flex items-center gap-2.5 group cursor-pointer shrink-0">
-          <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke={isDarkMode ? '#fff' : '#000'} strokeWidth="1.5"/><path d="M10 20V12l6 4 6-4v8" stroke={isDarkMode ? '#fff' : '#000'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <img src="/maiat-logo.jpg" alt="Maiat" className="w-7 h-7 rounded-full object-cover" />
           <span className={`font-mono font-bold text-base tracking-widest ${isDarkMode ? 'text-white' : 'text-black'}`}>maiat</span>
         </a>
 
