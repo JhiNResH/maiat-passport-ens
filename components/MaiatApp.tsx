@@ -27,7 +27,13 @@ interface PassportResult {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-const CountUp = ({ end, duration = 2 }: { end: number; duration?: number }) => {
+const formatCompact = (n: number): string => {
+  if (n >= 1000000) return `${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1)}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K`;
+  return n.toLocaleString();
+};
+
+const CountUp = ({ end, duration = 2, compact = false }: { end: number; duration?: number; compact?: boolean }) => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     let start = 0;
@@ -43,7 +49,7 @@ const CountUp = ({ end, duration = 2 }: { end: number; duration?: number }) => {
     }, 1000 / 60);
     return () => clearInterval(timer);
   }, [end, duration]);
-  return <>{count.toLocaleString()}</>;
+  return <>{compact ? formatCompact(count) : count.toLocaleString()}</>;
 };
 
 const verdictColor = (v: string) => {
@@ -608,7 +614,7 @@ export default function MaiatApp() {
           <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ${isDarkMode ? 'from-blue-500/10 to-purple-500/10' : 'from-blue-500/5 to-orange-500/5'}`} />
           <div className="relative z-10">
             <h2 className="text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
-              <CountUp end={stats.agents} />+
+              <CountUp end={stats.agents} compact />+
             </h2>
             <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Agents Scored & Verified</p>
           </div>
