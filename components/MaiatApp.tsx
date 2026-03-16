@@ -600,11 +600,20 @@ export default function MaiatApp() {
           className={`md:col-span-7 border rounded-[3.5rem] p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10 shadow-black/40' : 'bg-white border-black/5 shadow-black/5'}`}
         >
           <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ${isDarkMode ? 'from-blue-500/10 to-purple-500/10' : 'from-blue-500/5 to-orange-500/5'}`} />
-          <div className="relative z-10">
-            <h2 className="text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
-              <CountUp end={stats.passports} />
-            </h2>
-            <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Passports Claimed</p>
+          <div className="relative z-10 flex items-center justify-center gap-12 md:gap-20">
+            <div className="text-center">
+              <h2 className="text-5xl md:text-8xl font-black tracking-[-0.06em] leading-none mb-2">
+                <CountUp end={stats.passports} />
+              </h2>
+              <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-[0.2em]">Passports</p>
+            </div>
+            <div className={`w-px h-16 md:h-24 ${isDarkMode ? 'bg-white/10' : 'bg-black/10'}`} />
+            <div className="text-center">
+              <h2 className="text-5xl md:text-8xl font-black tracking-[-0.06em] leading-none mb-2">
+                <CountUp end={stats.queries} />
+              </h2>
+              <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-[0.2em]">API Queries</p>
+            </div>
           </div>
         </motion.div>
 
