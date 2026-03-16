@@ -61,7 +61,6 @@ const verdictColor = (v: string) => {
 // ─── macOS Dock magnification for passport nav ──────────────────────────────
 
 const passportNavLinks = [
-  { label: 'Verify', href: 'https://app.maiat.io/monitor' },
   { label: 'Docs', href: 'https://app.maiat.io/docs' },
   { label: 'API', href: 'https://app.maiat.io/docs#api' },
 ];
