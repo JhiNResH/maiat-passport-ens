@@ -727,19 +727,19 @@ export default function MaiatApp() {
 
         {/* Toggle Switch */}
         <div className="flex justify-center mb-12">
-          <div className={`relative flex rounded-full p-1 ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-black/[0.03] border border-black/5'}`}>
+          <div className={`relative flex rounded-full p-1 backdrop-blur-xl ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/60 border border-black/[0.08] shadow-[0_2px_20px_rgba(0,0,0,0.06)]'}`}>
             <button
               onClick={() => setShowAgentFlow(false)}
               className={`relative z-10 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${!showAgentFlow ? (isDarkMode ? 'text-white' : 'text-black') : 'text-gray-400'}`}
             >
-              {!showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-sm'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
+              {!showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-[0_1px_8px_rgba(0,0,0,0.08)]'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
               <span className="relative">For Humans</span>
             </button>
             <button
               onClick={() => setShowAgentFlow(true)}
               className={`relative z-10 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${showAgentFlow ? (isDarkMode ? 'text-white' : 'text-black') : 'text-gray-400'}`}
             >
-              {showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-sm'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
+              {showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-[0_1px_8px_rgba(0,0,0,0.08)]'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
               <span className="relative">For Agents</span>
             </button>
           </div>
@@ -749,52 +749,79 @@ export default function MaiatApp() {
         <AnimatePresence mode="wait">
           {!showAgentFlow ? (
             <motion.div key="humans" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
-                <h3 className="text-xl font-black mb-3">Connect Wallet</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">Sign in with your wallet above. We support all major wallets via Privy.</p>
-              </div>
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
-                <h3 className="text-xl font-black mb-3">Pick Your Name</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">Choose a unique name. You&apos;ll get <span className="font-bold">yourname.maiat.eth</span> — a gasless ENS subname, no fees ever.</p>
-              </div>
-              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
-                <h3 className="text-xl font-black mb-3">You&apos;re Verified</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-blue-500 shrink-0" /><span className="text-sm text-gray-400">On-chain ENS identity</span></div>
-                  <div className="flex items-center gap-3"><Shield className="w-4 h-4 text-emerald-500 shrink-0" /><span className="text-sm text-gray-400">Trust score from day 1</span></div>
-                  <div className="flex items-center gap-3"><Zap className="w-4 h-4 text-orange-400 shrink-0" /><span className="text-sm text-gray-400">10 🪲 bonus credits</span></div>
-                </div>
-              </div>
+              {[
+                { step: '1', title: 'Connect Wallet', desc: 'Sign in with your wallet above. We support all major wallets via Privy.', delay: 0 },
+                { step: '2', title: 'Pick Your Name', desc: null, delay: 0.1 },
+                { step: '✓', title: "You're Verified", desc: null, delay: 0.2 },
+              ].map((card, i) => (
+                <motion.div
+                  key={card.step}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: card.delay, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  className={`relative border rounded-[2.5rem] p-10 transition-all duration-500 overflow-hidden group cursor-default ${isDarkMode ? 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/[0.08]' : 'bg-white/70 backdrop-blur-xl border-white/80 shadow-[0_4px_32px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.08)] hover:border-black/10'}`}
+                >
+                  {/* Glass shimmer on hover */}
+                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${isDarkMode ? 'bg-gradient-to-br from-white/5 via-transparent to-white/5' : 'bg-gradient-to-br from-white/80 via-transparent to-blue-50/30'}`} />
+                  <div className="relative z-10">
+                    {i === 2 ? (
+                      <>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
+                        <h3 className="text-xl font-black mb-3">You&apos;re Verified</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-blue-500 shrink-0" /><span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>On-chain ENS identity</span></div>
+                          <div className="flex items-center gap-3"><Shield className="w-4 h-4 text-emerald-500 shrink-0" /><span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Trust score from day 1</span></div>
+                          <div className="flex items-center gap-3"><Zap className="w-4 h-4 text-orange-400 shrink-0" /><span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>10 🪲 bonus credits</span></div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/[0.04]'}`}>{card.step}</div>
+                        <h3 className="text-xl font-black mb-3">{card.title}</h3>
+                        <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {i === 0 ? 'Sign in with your wallet above. We support all major wallets via Privy.' : <>Choose a unique name. You&apos;ll get <span className="font-bold">yourname.maiat.eth</span> — a gasless ENS subname, no fees ever.</>}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
           ) : (
             <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="flex justify-center">
-              <div className={`border rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>🤖</div>
-                <h3 className="text-2xl font-black mb-3">Add this to your agent</h3>
-                <p className={`text-sm mb-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Point your agent to our skill file. It handles registration, trust checks, and wallet protection automatically.</p>
-                <div
-                  className={`rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all ${isDarkMode ? 'bg-[#0D0E12] border border-white/10 hover:border-white/20' : 'bg-gray-50 border border-black/5 hover:border-black/10'}`}
-                  onClick={() => { navigator.clipboard.writeText('https://app.maiat.io/skill.md'); setIsCopied(true); setTimeout(() => setIsCopied(false), 2000); }}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                      <span className="text-emerald-500">fetch</span>({`"`}<span className="text-blue-500">https://app.maiat.io/skill.md</span>{`"`})
-                    </span>
-                    <span className={`transition-colors ${isDarkMode ? 'text-white/40 group-hover:text-white' : 'text-black/30 group-hover:text-black'}`}>
-                      {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-                    </span>
+              <motion.div
+                whileHover={{ y: -4 }}
+                className={`relative border rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center transition-all duration-500 overflow-hidden group ${isDarkMode ? 'bg-white/5 border-white/10 hover:border-white/20' : 'bg-white/70 backdrop-blur-xl border-white/80 shadow-[0_4px_32px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.08)]'}`}
+              >
+                {/* Glass shimmer */}
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${isDarkMode ? 'bg-gradient-to-br from-white/5 via-transparent to-white/5' : 'bg-gradient-to-br from-white/80 via-transparent to-emerald-50/20'}`} />
+                <div className="relative z-10">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl ${isDarkMode ? 'bg-white/10' : 'bg-black/[0.04]'}`}>🤖</div>
+                  <h3 className="text-2xl font-black mb-3">Add this to your agent</h3>
+                  <p className={`text-sm mb-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Point your agent to our skill file. It handles registration, trust checks, and wallet protection automatically.</p>
+                  <div
+                    className={`rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group/code relative active:scale-[0.98] transition-all ${isDarkMode ? 'bg-[#0D0E12] border border-white/10 hover:border-white/20' : 'bg-black/[0.03] border border-black/[0.06] hover:border-black/10 hover:bg-black/[0.05]'}`}
+                    onClick={() => { navigator.clipboard.writeText('https://app.maiat.io/skill.md'); setIsCopied(true); setTimeout(() => setIsCopied(false), 2000); }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
+                        <span className={isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}>fetch</span>({`"`}<span className={isDarkMode ? 'text-blue-400' : 'text-blue-600'}>https://app.maiat.io/skill.md</span>{`"`})
+                      </span>
+                      <span className={`transition-colors ${isDarkMode ? 'text-white/40 group-hover/code:text-white' : 'text-black/30 group-hover/code:text-black'}`}>
+                        {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+                      </span>
+                    </div>
+                  </div>
+                  <p className={`text-[11px] mt-4 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>Your agent reads the skill file and follows the instructions automatically.</p>
+                  <div className={`flex items-center justify-center gap-6 mt-8 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-blue-500" /> ENS Identity</div>
+                    <div className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Trust Score</div>
+                    <div className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-orange-400" /> Wallet Guard</div>
                   </div>
                 </div>
-                <p className={`text-[11px] mt-4 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>Your agent reads the skill file and follows the instructions automatically.</p>
-                <div className={`flex items-center justify-center gap-6 mt-8 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-blue-500" /> ENS Identity</div>
-                  <div className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Trust Score</div>
-                  <div className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-orange-400" /> Wallet Guard</div>
-                </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
