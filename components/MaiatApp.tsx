@@ -298,9 +298,7 @@ export default function MaiatApp() {
         style={{ backdropFilter: 'blur(60px) saturate(180%)', WebkitBackdropFilter: 'blur(60px) saturate(180%)' }}
       >
         <a href="https://maiat.io" className="flex items-center gap-2.5 group cursor-pointer shrink-0">
-          <div className={`w-7 h-7 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
-            <Globe className={`w-3.5 h-3.5 ${isDarkMode ? 'text-black' : 'text-white'}`} />
-          </div>
+          <img src="/maiat-logo.jpg" alt="Maiat" className="w-7 h-7 rounded-full object-cover" />
           <span className={`font-mono font-bold text-base tracking-widest ${isDarkMode ? 'text-white' : 'text-black'}`}>maiat</span>
         </a>
 
