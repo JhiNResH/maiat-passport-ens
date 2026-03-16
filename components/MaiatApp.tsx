@@ -287,7 +287,7 @@ export default function MaiatApp() {
   }, []);
 
   return (
-    <div className={`min-h-screen flex flex-col items-center px-4 py-8 md:py-16 transition-colors duration-700 ${isDarkMode ? 'bg-[#0A0A0A] text-white' : 'bg-[#FDFDFB] text-black'} relative overflow-hidden selection:bg-blue-500 selection:text-white`}>
+    <div className={`min-h-screen flex flex-col items-center px-3 sm:px-4 py-6 sm:py-8 md:py-16 transition-colors duration-700 ${isDarkMode ? 'bg-[#0A0A0A] text-white' : 'bg-[#FDFDFB] text-black'} relative overflow-hidden selection:bg-blue-500 selection:text-white`}>
       {/* Atmospheric Backgrounds */}
       <motion.div
         animate={{ scale: [1, 1.1, 1], x: [0, 20, 0], y: [0, -20, 0] }}
@@ -305,7 +305,7 @@ export default function MaiatApp() {
         initial={{ y: -100, x: '-50%', opacity: 0 }}
         animate={{ y: navVisible ? 0 : -100, x: '-50%', opacity: navVisible ? 1 : 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-6 left-1/2 z-50 w-[95%] max-w-5xl rounded-full px-6 py-3 flex items-center justify-between border transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/[0.08] shadow-[inset_0_0_30px_rgba(255,255,255,0.02),0_30px_100px_rgba(0,0,0,0.3)]' : 'bg-white/70 border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.05)]'}`}
+        className={`fixed top-4 sm:top-6 left-1/2 z-50 w-[95%] max-w-5xl rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between border transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/[0.08] shadow-[inset_0_0_30px_rgba(255,255,255,0.02),0_30px_100px_rgba(0,0,0,0.3)]' : 'bg-white/70 border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.05)]'}`}
         style={{ backdropFilter: 'blur(60px) saturate(180%)', WebkitBackdropFilter: 'blur(60px) saturate(180%)' }}
       >
         <a href="https://maiat.io" className="flex items-center gap-2.5 group cursor-pointer shrink-0">
@@ -387,14 +387,14 @@ export default function MaiatApp() {
       </AnimatePresence>
 
       {/* Hero Section */}
-      <main className="w-full max-w-6xl flex flex-col items-center text-center mb-24 relative z-10">
+      <main className="w-full max-w-6xl flex flex-col items-center text-center mb-16 sm:mb-24 relative z-10 mt-16 sm:mt-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
-          <h1 className={`text-[8rem] md:text-[14rem] font-black tracking-[-0.06em] leading-tight mb-12 bg-clip-text text-transparent transition-all duration-1000 ${isDarkMode ? 'bg-gradient-to-b from-white to-gray-500' : 'bg-gradient-to-b from-black to-gray-700'}`}>
+          <h1 className={`text-[4rem] sm:text-[6rem] md:text-[14rem] font-black tracking-[-0.06em] leading-tight mb-6 sm:mb-12 bg-clip-text text-transparent transition-all duration-1000 ${isDarkMode ? 'bg-gradient-to-b from-white to-gray-500' : 'bg-gradient-to-b from-black to-gray-700'}`}>
             maiat.eth
           </h1>
           <div className={`absolute -top-4 -right-8 text-[10px] font-black px-3 py-1 rounded-full rotate-12 shadow-lg transition-colors duration-500 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>BETA</div>
@@ -404,7 +404,7 @@ export default function MaiatApp() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-gray-400 text-xl md:text-3xl font-medium max-w-4xl mb-20 tracking-tight leading-relaxed"
+          className="text-gray-400 text-base sm:text-xl md:text-3xl font-medium max-w-4xl mb-10 sm:mb-20 tracking-tight leading-relaxed px-2"
         >
           The verifiable identity layer for <span className={`${isDarkMode ? 'text-white' : 'text-black'} font-bold`}>autonomous agents</span>.
           One name. Trust score. On-chain reputation.
@@ -602,21 +602,21 @@ export default function MaiatApp() {
       </main>
 
       {/* Bento Grid */}
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-8 mb-32">
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-8 mb-16 sm:mb-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ y: -10, rotateX: 2, rotateY: -2 }}
-          className={`md:col-span-7 border rounded-[3.5rem] p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10 shadow-black/40' : 'bg-white border-black/5 shadow-black/5'}`}
+          className={`md:col-span-7 border rounded-[2rem] sm:rounded-[3.5rem] p-8 sm:p-12 md:p-20 flex flex-col items-center justify-center text-center relative overflow-hidden group transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10 shadow-black/40' : 'bg-white border-black/5 shadow-black/5'}`}
         >
           <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ${isDarkMode ? 'from-blue-500/10 to-purple-500/10' : 'from-blue-500/5 to-orange-500/5'}`} />
           <div className="relative z-10">
-            <h2 className="text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
+            <h2 className="text-5xl sm:text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
               <CountUp end={stats.agents} compact />+
             </h2>
-            <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Agents Scored & Verified</p>
+            <p className="text-gray-400 text-base sm:text-xl md:text-2xl font-bold tracking-tight uppercase">Agents Scored & Verified</p>
           </div>
         </motion.div>
 
@@ -727,7 +727,7 @@ export default function MaiatApp() {
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-6xl mb-32"
       >
-        <h2 className={`text-4xl md:text-6xl font-black tracking-[-0.04em] mb-16 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        <h2 className={`text-3xl sm:text-4xl md:text-6xl font-black tracking-[-0.04em] mb-10 sm:mb-16 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
           Give your agent an identity
         </h2>
 
