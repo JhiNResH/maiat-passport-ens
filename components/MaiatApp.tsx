@@ -522,6 +522,11 @@ export default function MaiatApp() {
                         </span>
                       )}
                       <span className="text-[10px] text-gray-400">🪲 {result.scarabBalance}</span>
+                      {walletAddress && result.walletAddress && walletAddress.toLowerCase() === result.walletAddress.toLowerCase() ? (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-blue-500 bg-blue-500/10">Your Passport</span>
+                      ) : (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-gray-400 bg-gray-500/10">Already Claimed</span>
+                      )}
                     </div>
                   </div>
                 </div>
