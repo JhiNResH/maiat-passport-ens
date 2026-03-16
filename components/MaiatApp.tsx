@@ -771,25 +771,25 @@ export default function MaiatApp() {
             </motion.div>
           ) : (
             <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="flex justify-center">
-              <div className="rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center bg-[#0D0E12] border border-white/5 shadow-2xl">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl bg-white/10">🤖</div>
-                <h3 className="text-2xl font-black mb-3 text-white">Add this to your agent</h3>
-                <p className="text-sm text-gray-500 mb-8">Point your agent to our skill file. It handles registration, trust checks, and wallet protection automatically.</p>
+              <div className={`border rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>🤖</div>
+                <h3 className="text-2xl font-black mb-3">Add this to your agent</h3>
+                <p className={`text-sm mb-8 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Point your agent to our skill file. It handles registration, trust checks, and wallet protection automatically.</p>
                 <div
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all hover:border-white/20"
+                  className={`rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all ${isDarkMode ? 'bg-[#0D0E12] border border-white/10 hover:border-white/20' : 'bg-gray-50 border border-black/5 hover:border-black/10'}`}
                   onClick={() => { navigator.clipboard.writeText('https://app.maiat.io/skill.md'); setIsCopied(true); setTimeout(() => setIsCopied(false), 2000); }}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">
-                      <span className="text-emerald-400">fetch</span>({`"`}<span className="text-blue-400">https://app.maiat.io/skill.md</span>{`"`})
+                    <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
+                      <span className="text-emerald-500">fetch</span>({`"`}<span className="text-blue-500">https://app.maiat.io/skill.md</span>{`"`})
                     </span>
-                    <span className="text-white/40 group-hover:text-white transition-colors">
-                      {isCopied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                    <span className={`transition-colors ${isDarkMode ? 'text-white/40 group-hover:text-white' : 'text-black/30 group-hover:text-black'}`}>
+                      {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                     </span>
                   </div>
                 </div>
-                <p className="text-[11px] text-gray-600 mt-4">Your agent reads the skill file and follows the instructions automatically.</p>
-                <div className="flex items-center justify-center gap-6 mt-8 text-xs text-gray-500">
+                <p className={`text-[11px] mt-4 ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>Your agent reads the skill file and follows the instructions automatically.</p>
+                <div className={`flex items-center justify-center gap-6 mt-8 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                   <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-blue-500" /> ENS Identity</div>
                   <div className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Trust Score</div>
                   <div className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-orange-400" /> Wallet Guard</div>
