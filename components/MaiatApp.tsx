@@ -771,12 +771,12 @@ export default function MaiatApp() {
             </motion.div>
           ) : (
             <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="flex justify-center">
-              <div className={`border rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>🤖</div>
-                <h3 className="text-2xl font-black mb-3">Add this to your agent</h3>
-                <p className="text-sm text-gray-400 mb-8">Point your agent to our skill file. It contains everything needed — registration, trust checks, wallet protection, and more.</p>
+              <div className="rounded-[2.5rem] p-10 md:p-14 max-w-2xl w-full text-center bg-[#0D0E12] border border-white/5 shadow-2xl">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl bg-white/10">🤖</div>
+                <h3 className="text-2xl font-black mb-3 text-white">Add this to your agent</h3>
+                <p className="text-sm text-gray-500 mb-8">Point your agent to our skill file. It handles registration, trust checks, and wallet protection automatically.</p>
                 <div
-                  className="bg-[#0D0E12] rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all"
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 font-mono text-sm md:text-base text-left cursor-pointer group relative active:scale-[0.98] transition-all hover:border-white/20"
                   onClick={() => { navigator.clipboard.writeText('https://app.maiat.io/skill.md'); setIsCopied(true); setTimeout(() => setIsCopied(false), 2000); }}
                 >
                   <div className="flex items-center justify-between">
@@ -788,8 +788,8 @@ export default function MaiatApp() {
                     </span>
                   </div>
                 </div>
-                <p className="text-[11px] text-gray-500 mt-4">Your agent reads the skill file and follows the instructions automatically.</p>
-                <div className="flex items-center justify-center gap-6 mt-8 text-xs text-gray-400">
+                <p className="text-[11px] text-gray-600 mt-4">Your agent reads the skill file and follows the instructions automatically.</p>
+                <div className="flex items-center justify-center gap-6 mt-8 text-xs text-gray-500">
                   <div className="flex items-center gap-2"><Globe className="w-3.5 h-3.5 text-blue-500" /> ENS Identity</div>
                   <div className="flex items-center gap-2"><Shield className="w-3.5 h-3.5 text-emerald-500" /> Trust Score</div>
                   <div className="flex items-center gap-2"><Zap className="w-3.5 h-3.5 text-orange-400" /> Wallet Guard</div>
