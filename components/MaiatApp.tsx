@@ -121,6 +121,7 @@ export default function MaiatApp() {
   const [result, setResult] = useState<PassportResult | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [stats, setStats] = useState({ passports: 0, queries: 0, agents: 0 });
+  const [showAgentFlow, setShowAgentFlow] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
@@ -719,93 +720,82 @@ export default function MaiatApp() {
           Give your agent an identity
         </h2>
 
-        {/* For Humans */}
-        <p className={`text-center text-sm font-bold uppercase tracking-[0.3em] mb-8 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>For Humans</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
-            <h3 className="text-xl font-black mb-3">Connect Wallet</h3>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Sign in with your wallet above. We support all major wallets via Privy.
-            </p>
-          </div>
-
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
-            <h3 className="text-xl font-black mb-3">Pick Your Name</h3>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Choose a unique name. You&apos;ll get <span className="font-bold">yourname.maiat.eth</span> — a gasless ENS subname, no fees ever.
-            </p>
-          </div>
-
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 relative overflow-hidden ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
-            <h3 className="text-xl font-black mb-3">You&apos;re Verified</h3>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Globe className="w-4 h-4 text-blue-500 shrink-0" />
-                <span className="text-sm text-gray-400">On-chain ENS identity</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span className="text-sm text-gray-400">Trust score from day 1</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Zap className="w-4 h-4 text-orange-400 shrink-0" />
-                <span className="text-sm text-gray-400">10 🪲 bonus credits</span>
-              </div>
-            </div>
+        {/* Toggle Switch */}
+        <div className="flex justify-center mb-12">
+          <div className={`relative flex rounded-full p-1 ${isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-black/[0.03] border border-black/5'}`}>
+            <button
+              onClick={() => setShowAgentFlow(false)}
+              className={`relative z-10 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${!showAgentFlow ? (isDarkMode ? 'text-white' : 'text-black') : 'text-gray-400'}`}
+            >
+              {!showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-sm'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
+              <span className="relative">For Humans</span>
+            </button>
+            <button
+              onClick={() => setShowAgentFlow(true)}
+              className={`relative z-10 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 ${showAgentFlow ? (isDarkMode ? 'text-white' : 'text-black') : 'text-gray-400'}`}
+            >
+              {showAgentFlow && <motion.div layoutId="switchBg" className={`absolute inset-0 rounded-full ${isDarkMode ? 'bg-white/10' : 'bg-white shadow-sm'}`} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />}
+              <span className="relative">For Agents</span>
+            </button>
           </div>
         </div>
 
-        {/* For Agents */}
-        <p className={`text-center text-sm font-bold uppercase tracking-[0.3em] mb-8 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>For Agents</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
-            <h3 className="text-xl font-black mb-3">Install SDK</h3>
-            <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-sm mb-4">
-              <span className="text-emerald-400">npm</span> <span className="text-gray-400">install @jhinresh/maiat-sdk</span>
-            </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Or use the REST API directly — no SDK required.
-            </p>
-          </div>
-
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
-            <h3 className="text-xl font-black mb-3">Register via API</h3>
-            <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-[11px] leading-relaxed mb-4">
-              <span className="text-emerald-400">POST</span> <span className="text-gray-400">/v1/passport/register</span><br /><br />
-              <span className="text-gray-500">{'{'}</span><br />
-              <span className="text-gray-400">&nbsp;&nbsp;&quot;ensName&quot;: </span><span className="text-emerald-400">&quot;my-agent&quot;</span><span className="text-gray-500">,</span><br />
-              <span className="text-gray-400">&nbsp;&nbsp;&quot;walletAddress&quot;: </span><span className="text-emerald-400">&quot;0x...&quot;</span><br />
-              <span className="text-gray-500">{'}'}</span>
-            </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              One call. Your agent gets a passport + ENS name instantly.
-            </p>
-          </div>
-
-          <div className={`border rounded-[2.5rem] p-10 transition-all duration-500 relative overflow-hidden ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
-            <h3 className="text-xl font-black mb-3">Agent is Live</h3>
-            <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Globe className="w-4 h-4 text-blue-500 shrink-0" />
-                <span className="text-sm text-gray-400">Resolvable ENS identity</span>
+        {/* Steps Grid */}
+        <AnimatePresence mode="wait">
+          {!showAgentFlow ? (
+            <motion.div key="humans" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
+                <h3 className="text-xl font-black mb-3">Connect Wallet</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">Sign in with your wallet above. We support all major wallets via Privy.</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span className="text-sm text-gray-400">Queryable trust score</span>
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
+                <h3 className="text-xl font-black mb-3">Pick Your Name</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">Choose a unique name. You&apos;ll get <span className="font-bold">yourname.maiat.eth</span> — a gasless ENS subname, no fees ever.</p>
               </div>
-              <div className="flex items-center gap-3">
-                <Zap className="w-4 h-4 text-orange-400 shrink-0" />
-                <span className="text-sm text-gray-400">Verifiable on-chain via CCIP-Read</span>
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
+                <h3 className="text-xl font-black mb-3">You&apos;re Verified</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-blue-500 shrink-0" /><span className="text-sm text-gray-400">On-chain ENS identity</span></div>
+                  <div className="flex items-center gap-3"><Shield className="w-4 h-4 text-emerald-500 shrink-0" /><span className="text-sm text-gray-400">Trust score from day 1</span></div>
+                  <div className="flex items-center gap-3"><Zap className="w-4 h-4 text-orange-400 shrink-0" /><span className="text-sm text-gray-400">10 🪲 bonus credits</span></div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          ) : (
+            <motion.div key="agents" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>1</div>
+                <h3 className="text-xl font-black mb-3">Install SDK</h3>
+                <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-sm mb-4"><span className="text-emerald-400">npm</span> <span className="text-gray-400">install @jhinresh/maiat-sdk</span></div>
+                <p className="text-sm text-gray-400 leading-relaxed">Or use the REST API directly — no SDK required.</p>
+              </div>
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-white/10' : 'bg-black/5'}`}>2</div>
+                <h3 className="text-xl font-black mb-3">Register via API</h3>
+                <div className="bg-[#0D0E12] rounded-2xl p-5 font-mono text-[11px] leading-relaxed mb-4">
+                  <span className="text-emerald-400">POST</span> <span className="text-gray-400">/v1/passport/register</span><br /><br />
+                  <span className="text-gray-500">{'{'}</span><br />
+                  <span className="text-gray-400">&nbsp;&nbsp;&quot;ensName&quot;: </span><span className="text-emerald-400">&quot;my-agent&quot;</span><span className="text-gray-500">,</span><br />
+                  <span className="text-gray-400">&nbsp;&nbsp;&quot;walletAddress&quot;: </span><span className="text-emerald-400">&quot;0x...&quot;</span><br />
+                  <span className="text-gray-500">{'}'}</span>
+                </div>
+                <p className="text-sm text-gray-400 leading-relaxed">One call. Your agent gets a passport + ENS name instantly.</p>
+              </div>
+              <div className={`border rounded-[2.5rem] p-10 transition-colors duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 text-lg font-black ${isDarkMode ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-50 text-emerald-600'}`}>✓</div>
+                <h3 className="text-xl font-black mb-3">Agent is Live</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3"><Globe className="w-4 h-4 text-blue-500 shrink-0" /><span className="text-sm text-gray-400">Resolvable ENS identity</span></div>
+                  <div className="flex items-center gap-3"><Shield className="w-4 h-4 text-emerald-500 shrink-0" /><span className="text-sm text-gray-400">Queryable trust score</span></div>
+                  <div className="flex items-center gap-3"><Zap className="w-4 h-4 text-orange-400 shrink-0" /><span className="text-sm text-gray-400">Verifiable on-chain via CCIP-Read</span></div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Footer */}
