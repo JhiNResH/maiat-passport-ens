@@ -385,7 +385,7 @@ export default function MaiatApp() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
-          <h1 className={`text-[8rem] md:text-[14rem] font-black tracking-[-0.06em] leading-[0.8] mb-12 bg-clip-text text-transparent transition-all duration-1000 ${isDarkMode ? 'bg-gradient-to-b from-white to-gray-500' : 'bg-gradient-to-b from-black to-gray-700'}`}>
+          <h1 className={`text-[8rem] md:text-[14rem] font-black tracking-[-0.06em] leading-[0.85] pt-2 mb-12 bg-clip-text text-transparent transition-all duration-1000 ${isDarkMode ? 'bg-gradient-to-b from-white to-gray-500' : 'bg-gradient-to-b from-black to-gray-700'}`}>
             maiat.eth
           </h1>
           <div className={`absolute -top-4 -right-8 text-[10px] font-black px-3 py-1 rounded-full rotate-12 shadow-lg transition-colors duration-500 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>BETA</div>
