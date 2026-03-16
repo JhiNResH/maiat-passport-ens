@@ -120,7 +120,7 @@ export default function MaiatApp() {
   const [searchState, setSearchState] = useState<SearchState>('idle');
   const [result, setResult] = useState<PassportResult | null>(null);
   const [isCopied, setIsCopied] = useState(false);
-  const [liveClaims, setLiveClaims] = useState(21739);
+  const [stats, setStats] = useState({ passports: 0, queries: 0 });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
@@ -148,14 +148,11 @@ export default function MaiatApp() {
     }
   }, [isDarkMode]);
 
-  // Simulate live claims counter
+  // Fetch real passport stats
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
-        setLiveClaims(prev => prev + 1);
-      }
-    }, 3000);
-    return () => clearInterval(interval);
+    fetch(`${API}/api/v1/passport/stats`).then(r => r.json()).then(d => {
+      if (d.passports !== undefined) setStats(d);
+    }).catch(() => {});
   }, []);
 
   // ── Search (debounced, real API) ──────────────────────────────────────────
@@ -605,9 +602,9 @@ export default function MaiatApp() {
           <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ${isDarkMode ? 'from-blue-500/10 to-purple-500/10' : 'from-blue-500/5 to-orange-500/5'}`} />
           <div className="relative z-10">
             <h2 className="text-7xl md:text-[10rem] font-black tracking-[-0.08em] mb-4 leading-none">
-              <CountUp end={21700} />+
+              <CountUp end={stats.passports} />
             </h2>
-            <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Agents Scored & Verified</p>
+            <p className="text-gray-400 text-xl md:text-2xl font-bold tracking-tight uppercase">Passports Claimed</p>
           </div>
         </motion.div>
 
@@ -695,23 +692,17 @@ export default function MaiatApp() {
               className={`border rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-500 ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-black/5 shadow-sm'}`}
             >
               <div className="flex items-center justify-between">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center relative ${isDarkMode ? 'bg-red-500/20' : 'bg-red-50'}`}>
-                  <Activity className="w-6 h-6 text-red-500" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-ping" />
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center relative ${isDarkMode ? 'bg-emerald-500/20' : 'bg-emerald-50'}`}>
+                  <Activity className="w-6 h-6 text-emerald-500" />
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Live</p>
-                  <motion.p
-                    key={liveClaims}
-                    initial={{ scale: 1.2, color: '#ef4444' }}
-                    animate={{ scale: 1, color: isDarkMode ? '#ffffff' : '#000000' }}
-                    className="text-3xl font-black tracking-tighter"
-                  >
-                    {liveClaims}
-                  </motion.p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total</p>
+                  <p className="text-3xl font-black tracking-tighter">
+                    {stats.queries}
+                  </p>
                 </div>
               </div>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Agents indexed</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">API Queries</p>
             </motion.div>
           </div>
         </div>
