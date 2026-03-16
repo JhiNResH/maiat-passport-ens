@@ -5,7 +5,8 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { CheckCircle, Copy, ExternalLink, Shield, Twitter, Users } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://app.maiat.io';
+// Use local proxy routes to avoid CORS issues
+const API_BASE = '';
 
 interface AgentInfo {
   address: string;
@@ -62,7 +63,7 @@ export default function VerifyPage() {
   const loadAgent = useCallback(async () => {
     if (!code) return;
     try {
-      const res = await fetch(`${API_BASE}/api/v1/kya/${code}`);
+      const res = await fetch(`/api/kya/${code}`);
       if (!res.ok) {
         const data = await res.json();
         setErrorMsg(data.error ?? 'Agent not found');
@@ -112,7 +113,7 @@ export default function VerifyPage() {
     }
     setSubmitting(true);
     try {
-      const res = await fetch(`${API_BASE}/api/v1/kya/endorse`, {
+      const res = await fetch(`/api/kya/endorse`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
