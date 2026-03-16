@@ -172,7 +172,7 @@ export default function MaiatApp() {
 
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`${API}/api/passport/lookup?q=${encodeURIComponent(q)}`);
+        const res = await fetch(`${API}/api/v1/passport/lookup?q=${encodeURIComponent(q)}`);
         if (res.status === 404) {
           setSearchState('available');
         } else if (res.ok) {
@@ -236,7 +236,7 @@ export default function MaiatApp() {
 
     setRegistering(true);
     try {
-      const res = await fetch(`${API}/api/passport/register`, {
+      const res = await fetch(`${API}/api/v1/passport/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -267,7 +267,7 @@ export default function MaiatApp() {
   // ── Copy ──────────────────────────────────────────────────────────────────
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(`curl -X POST ${API}/api/passport/register \\
+    navigator.clipboard.writeText(`curl -X POST ${API}/api/v1/passport/register \\
   -H "Content-Type: application/json" \\
   -H "X-Maiat-Client: your-agent-id" \\
   -d '{"ensName": "myagent", "walletAddress": "0x..."}'`);
