@@ -109,6 +109,13 @@ export default function MaiatApp() {
   const connectedWallet = wallets.find(w => w.walletClientType !== 'privy') ?? wallets[0];
   const walletAddress = connectedWallet?.address ?? null;
 
+  const [referrer, setReferrer] = useState<string | null>(null);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) setReferrer(ref);
+  }, []);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [searchState, setSearchState] = useState<SearchState>('idle');
@@ -246,6 +253,7 @@ export default function MaiatApp() {
           ensName,
           walletAddress: wallet,
           type: 'human',
+          ...(referrer ? { referredBy: referrer } : {}),
         }),
       });
       const data = await res.json();
@@ -523,7 +531,7 @@ export default function MaiatApp() {
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex items-center gap-2">
                     <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Just claimed my Maiat Trust Passport 🛡️\n\n${result.ensFullName} — my verifiable identity is live.\n\nClaim yours →`)}&url=${encodeURIComponent('https://passport.maiat.io')}`}
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Just claimed my Maiat Trust Passport 🛡️\n\n${result.ensFullName} — my verifiable identity is live.\n\nClaim yours →`)}&url=${encodeURIComponent(`https://passport.maiat.io?ref=${result.ensName}`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setShared(true)}
@@ -543,10 +551,10 @@ export default function MaiatApp() {
                     </a>
                   </div>
                   {!shared && (
-                    <span className="text-[10px] text-blue-500 font-bold animate-pulse">Share & earn 5 extra 🪲</span>
+                    <span className="text-[10px] text-blue-500 font-bold animate-pulse">Share your referral link → earn 5 🪲 per signup</span>
                   )}
                   {shared && (
-                    <span className="text-[10px] text-emerald-500 font-bold">+5 🪲 bonus claimed!</span>
+                    <span className="text-[10px] text-emerald-500 font-bold">Referral link shared! You earn 5 🪲 per signup</span>
                   )}
                 </div>
               </motion.div>
