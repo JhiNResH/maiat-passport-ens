@@ -23,6 +23,7 @@ interface PassportResult {
   passportUrl: string;
   scarabBalance: number;
   totalQueries: number;
+  erc8004Status?: 'registered' | 'pending' | 'failed' | 'skipped';
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -528,6 +529,16 @@ export default function MaiatApp() {
                         </span>
                       )}
                       <span className="text-[10px] text-gray-400">🪲 {result.scarabBalance}</span>
+                      {result.erc8004Status === 'registered' && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-purple-500 bg-purple-500/10">
+                          On-Chain ✓
+                        </span>
+                      )}
+                      {result.erc8004Status === 'pending' && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-yellow-500 bg-yellow-500/10">
+                          Confirming…
+                        </span>
+                      )}
                       {walletAddress && result.walletAddress && walletAddress.toLowerCase() === result.walletAddress.toLowerCase() ? (
                         <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase text-blue-500 bg-blue-500/10">Your Passport</span>
                       ) : (
