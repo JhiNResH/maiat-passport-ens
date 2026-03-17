@@ -8,50 +8,30 @@ const LOGO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAYABgAAD/4QCARXhpZgAATU0
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const name = searchParams.get('name') || 'agent';
-  const score = searchParams.get('score') || '—';
-  const type = searchParams.get('type') || 'human';
+  const logo = searchParams.get('logo') || '';
   const shape = searchParams.get('shape') || 'og';
 
   const isSquare = shape === 'square';
   const width = isSquare ? 500 : 1200;
   const height = isSquare ? 500 : 630;
 
-  const numScore = parseInt(score, 10);
-  const hasScore = !isNaN(numScore);
-  const scoreColor = hasScore
-    ? numScore >= 80 ? '#059669' : numScore >= 50 ? '#2563EB' : numScore >= 30 ? '#D97706' : '#DC2626'
-    : '#2563EB';
-  const scoreBg = hasScore
-    ? numScore >= 80 ? 'rgba(5,150,105,0.08)' : numScore >= 50 ? 'rgba(37,99,235,0.08)' : numScore >= 30 ? 'rgba(217,119,6,0.08)' : 'rgba(220,38,38,0.08)'
-    : 'rgba(37,99,235,0.08)';
-  const scoreBorder = hasScore
-    ? numScore >= 80 ? 'rgba(5,150,105,0.18)' : numScore >= 50 ? 'rgba(37,99,235,0.18)' : numScore >= 30 ? 'rgba(217,119,6,0.18)' : 'rgba(220,38,38,0.18)'
-    : 'rgba(37,99,235,0.18)';
-  const verdict = hasScore
-    ? numScore >= 80 ? 'Trusted' : numScore >= 50 ? 'Proceed' : numScore >= 30 ? 'Caution' : 'Risky'
-    : '';
+  const logoSrc = logo || LOGO;
 
   if (isSquare) {
-    // ─── Square (500×500) — Light, liquid-glass, logo top-left ───
+    // ─── Square (500×500) — Logo top-left, ENS name bottom-left ───
     return new ImageResponse(
       (
         <div style={{
           width: '500px', height: '500px',
           display: 'flex', position: 'relative', overflow: 'hidden',
-          background: '#FDFDFB',
+          background: '#F8F8F6',
           fontFamily: 'Inter, system-ui, sans-serif',
         }}>
-          {/* Atmosphere */}
+          {/* Subtle atmosphere */}
           <div style={{
-            position: 'absolute', top: '-80px', right: '-40px',
-            width: '320px', height: '320px', borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
-            display: 'flex',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '-100px', left: '-60px',
-            width: '340px', height: '340px', borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%)',
+            position: 'absolute', top: '-120px', right: '-60px',
+            width: '360px', height: '360px', borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(16,185,129,0.04) 0%, transparent 70%)',
             display: 'flex',
           }} />
 
@@ -60,73 +40,36 @@ export async function GET(req: NextRequest) {
             position: 'absolute',
             top: '28px', left: '28px', right: '28px', bottom: '28px',
             display: 'flex', flexDirection: 'column',
+            justifyContent: 'space-between',
             borderRadius: '32px',
-            background: 'rgba(255,255,255,0.75)',
+            background: 'rgba(255,255,255,0.85)',
             border: '1px solid rgba(0,0,0,0.06)',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02)',
             padding: '32px',
           }}>
-            {/* Logo — top left */}
-            <div style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: '48px', height: '48px', borderRadius: '14px',
-              overflow: 'hidden',
-              border: '1px solid rgba(0,0,0,0.06)',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-              marginBottom: '0px',
-            }}>
-              <img src={LOGO} width={48} height={48} style={{ objectFit: 'cover' }} />
+            {/* Logo top-left */}
+            <div style={{ display: 'flex' }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: '56px', height: '56px', borderRadius: '14px',
+                overflow: 'hidden',
+                border: '1px solid rgba(0,0,0,0.06)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+              }}>
+                <img src={logoSrc} width={56} height={56} style={{ objectFit: 'cover' }} />
+              </div>
             </div>
 
-            {/* Spacer to push content down */}
-            <div style={{ display: 'flex', flex: '1' }} />
-
-            {/* ENS Name — bottom area */}
-            <div style={{
-              display: 'flex', flexDirection: 'column',
-              gap: '14px',
-            }}>
-              <div style={{
-                display: 'flex',
+            {/* ENS Name bottom-left */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{
                 fontSize: '28px', fontWeight: 900,
                 color: '#000000',
-                letterSpacing: '-0.04em',
-                lineHeight: 1,
+                letterSpacing: '-0.03em',
+                lineHeight: 1.1,
               }}>
                 {`${name}.maiat.eth`}
-              </div>
-
-              {/* Badges */}
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {hasScore && (
-                  <div style={{
-                    display: 'flex', alignItems: 'center', gap: '5px',
-                    backgroundColor: scoreBg,
-                    border: `1px solid ${scoreBorder}`,
-                    borderRadius: '999px', padding: '5px 12px',
-                  }}>
-                    <div style={{
-                      width: '5px', height: '5px', borderRadius: '50%',
-                      background: scoreColor, display: 'flex',
-                    }} />
-                    <span style={{
-                      fontSize: '11px', fontWeight: 700, color: scoreColor,
-                    }}>
-                      {`${score} · ${verdict}`}
-                    </span>
-                  </div>
-                )}
-                <div style={{
-                  display: 'flex', alignItems: 'center',
-                  backgroundColor: 'rgba(59,130,246,0.06)',
-                  border: '1px solid rgba(59,130,246,0.12)',
-                  borderRadius: '999px', padding: '5px 12px',
-                }}>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#3B82F6' }}>
-                    ENS Verified
-                  </span>
-                </div>
-              </div>
+              </span>
             </div>
           </div>
 
@@ -150,26 +93,20 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // ─── OG Rectangle (1200×630) — Same style, wider ───
+  // ─── OG Rectangle (1200×630) — Logo top-left, ENS name bottom-left ───
   return new ImageResponse(
     (
       <div style={{
         width: '1200px', height: '630px',
         display: 'flex', position: 'relative', overflow: 'hidden',
-        background: '#FDFDFB',
+        background: '#F8F8F6',
         fontFamily: 'Inter, system-ui, sans-serif',
       }}>
-        {/* Atmosphere */}
+        {/* Subtle atmosphere */}
         <div style={{
-          position: 'absolute', top: '-120px', right: '60px',
+          position: 'absolute', top: '-100px', right: '100px',
           width: '500px', height: '500px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
-          display: 'flex',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-140px', left: '100px',
-          width: '440px', height: '440px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(16,185,129,0.04) 0%, transparent 70%)',
           display: 'flex',
         }} />
 
@@ -178,70 +115,36 @@ export async function GET(req: NextRequest) {
           position: 'absolute',
           top: '36px', left: '36px', right: '36px', bottom: '36px',
           display: 'flex', flexDirection: 'column',
-          borderRadius: '32px',
-          background: 'rgba(255,255,255,0.75)',
+          justifyContent: 'space-between',
+          borderRadius: '40px',
+          background: 'rgba(255,255,255,0.85)',
           border: '1px solid rgba(0,0,0,0.06)',
-          boxShadow: '0 20px 50px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02)',
-          padding: '48px',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02)',
+          padding: '48px 64px',
         }}>
-          {/* Logo — top left */}
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            width: '56px', height: '56px', borderRadius: '16px',
-            overflow: 'hidden',
-            border: '1px solid rgba(0,0,0,0.06)',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
-          }}>
-            <img src={LOGO} width={56} height={56} style={{ objectFit: 'cover' }} />
+          {/* Logo top-left */}
+          <div style={{ display: 'flex' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '72px', height: '72px', borderRadius: '18px',
+              overflow: 'hidden',
+              border: '1px solid rgba(0,0,0,0.06)',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
+            }}>
+              <img src={logoSrc} width={72} height={72} style={{ objectFit: 'cover' }} />
+            </div>
           </div>
 
-          {/* Spacer */}
-          <div style={{ display: 'flex', flex: '1' }} />
-
-          {/* Name + Badges — bottom left */}
-          <div style={{
-            display: 'flex', flexDirection: 'column', gap: '18px',
-          }}>
-            <div style={{
-              display: 'flex',
-              fontSize: '52px', fontWeight: 900,
+          {/* ENS Name bottom-left */}
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{
+              fontSize: '48px', fontWeight: 900,
               color: '#000000',
               letterSpacing: '-0.04em',
-              lineHeight: 1,
+              lineHeight: 1.1,
             }}>
               {`${name}.maiat.eth`}
-            </div>
-
-            <div style={{ display: 'flex', gap: '12px' }}>
-              {hasScore && (
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: '6px',
-                  backgroundColor: scoreBg,
-                  border: `1px solid ${scoreBorder}`,
-                  borderRadius: '999px', padding: '8px 18px',
-                }}>
-                  <div style={{
-                    width: '6px', height: '6px', borderRadius: '50%',
-                    background: scoreColor, display: 'flex',
-                  }} />
-                  <span style={{
-                    fontSize: '16px', fontWeight: 700, color: scoreColor,
-                  }}>
-                    {`${score} · ${verdict}`}
-                  </span>
-                </div>
-              )}
-              <div style={{
-                display: 'flex', alignItems: 'center',
-                backgroundColor: 'rgba(59,130,246,0.06)',
-                border: '1px solid rgba(59,130,246,0.12)',
-                borderRadius: '999px', padding: '8px 18px',
-              }}>
-                <span style={{ fontSize: '16px', fontWeight: 700, color: '#3B82F6' }}>
-                  ENS Verified
-                </span>
-              </div>
-            </div>
+            </span>
           </div>
         </div>
 
@@ -249,7 +152,6 @@ export async function GET(req: NextRequest) {
         <div style={{
           position: 'absolute', bottom: '14px', left: '0', right: '0',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: '20px',
         }}>
           <span style={{
             fontSize: '9px', fontWeight: 700,

@@ -281,7 +281,7 @@ export default function MaiatApp() {
     navigator.clipboard.writeText(`curl -X POST https://app.maiat.io/api/v1/passport/register \\
   -H "Content-Type: application/json" \\
   -H "X-Maiat-Client: your-agent-id" \\
-  -d '{"ensName": "myagent", "walletAddress": "0x..."}'`);
+  -d '{"ensName": "myagent", "type": "agent"}'`);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   }, []);
@@ -648,7 +648,7 @@ export default function MaiatApp() {
               <div className="text-gray-600 text-sm pl-4 border-l border-white/10 mt-4">
                 {"{"}<br />
                 &nbsp;&nbsp;&quot;ensName&quot;: &quot;myagent&quot;,<br />
-                &nbsp;&nbsp;&quot;walletAddress&quot;: &quot;0x71C...3a2&quot;<br />
+                &nbsp;&nbsp;&quot;type&quot;: &quot;agent&quot;<br />
                 {"}"}
               </div>
               <div className="text-gray-700 text-xs mt-3">
